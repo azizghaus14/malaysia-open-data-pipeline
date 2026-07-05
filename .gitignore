@@ -1,0 +1,8 @@
+# regenerable artifacts
+data/warehouse.duckdb
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
