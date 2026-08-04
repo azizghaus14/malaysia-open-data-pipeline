@@ -38,15 +38,15 @@ Analysis marts are built on top with window functions
 (`LAG(cpi_index, 12) OVER (PARTITION BY ...)` for year-over-year inflation):
 `cpi_yoy_national`, `cpi_yoy_state`, `fuel_monthly`, `transport_vs_fuel`.
 
-## Key findings (May 2026 data)
+## Key findings (June 2026, latest release)
 
 | Question | Finding |
 |---|---|
-| Where is inflation now? | Headline CPI **+2.0% YoY** — modest, but masking a wide spread |
-| What's driving it? | **Insurance & Financial Services (+4.9%)** and **Transport (+3.8%)** run hottest; Clothing is deflating (−0.1%) |
-| Is inflation uniform across Malaysia? | No — **Pahang +2.8%** vs **Sarawak +0.5%** in the same month |
-| Do oil shocks hit consumers? | Only partly: RON97-price YoY vs transport-CPI YoY correlate at **r = 0.75**, but the administered RON95 cap visibly dampens the pass-through |
-| Subsidy rationalisation in the data | Post-2024 targeted-subsidy era is clearly visible: market diesel peaked at **RM 6.72/L** (Apr 2026) while capped RON95 held near RM 2.05 until the BUDI95 restructure |
+| Where is inflation now? | Headline CPI **+1.9% YoY** — modest, but masking a wide spread |
+| What's driving it? | **Insurance & Financial Services (+5.7%)** runs hottest, then Personal Care (+3.4%) and Transport (+2.8%); Clothing & Footwear is flat (0.0%) |
+| Is inflation uniform across Malaysia? | No — **Pahang +2.6%** vs **Sarawak +0.4%** in the same month |
+| Do pump prices move the transport CPI? | Partly: **Pearson r = 0.74** between transport-CPI YoY and RON97-price YoY (99 monthly observations). Correlating *year-over-year changes* rather than price levels avoids the spurious co-trending two rising series would otherwise show |
+| Is the fuel-subsidy regime visible in the data? | Yes — RON95 sat at **exactly RM 2.05 for 242 weeks** (all of 2023), then unpegged: it ranges **RM 2.52–4.27 across 2026**. Market-priced diesel peaked at **RM 6.72/L** (9 Apr 2026) |
 
 Auto-generated details: [`reports/summary.md`](reports/summary.md).
 
@@ -67,9 +67,12 @@ the checks a production pipeline runs after every load:
 - **Continuity & freshness** — no month gaps in the national series; data is recent
 
 One check earned its keep during development: the fuel-price validity range
-originally capped at RM 6/L and **correctly failed** on real Apr 2026 diesel
-prices (RM 6.72) — a policy change (subsidy rationalisation), not bad data,
-so the rule was updated and documented.
+originally capped diesel at RM 6/L and **failed** on the week of 9 Apr 2026
+(RM 6.72/L). Investigating the failure showed the value was genuine — it
+matches the official series and the surrounding weeks (RM 6.02, 5.97, 5.12) —
+so the bound was widened to RM 8 and the reason recorded in the test. That is
+the point of the suite: it forces you to explain an outlier before accepting
+it, rather than silently ingesting it.
 
 ## Run it
 
