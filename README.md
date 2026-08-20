@@ -38,52 +38,44 @@ Analysis marts are built on top with window functions
 (`LAG(cpi_index, 12) OVER (PARTITION BY ...)` for year-over-year inflation):
 `cpi_yoy_national`, `cpi_yoy_state`, `fuel_monthly`, `transport_vs_fuel`.
 
-## Key findings (June 2026, latest release)
+## Key findings (July 2026, latest release)
 
 | Question | Finding |
 |---|---|
-| Where is inflation now? | Headline CPI **+1.9% YoY** — modest, but masking a wide spread |
-| What's driving it? | **Insurance & Financial Services (+5.7%)** runs hottest, then Personal Care (+3.4%) and Transport (+2.8%); Clothing & Footwear is flat (0.0%) |
-| Is inflation uniform across Malaysia? | No — **Pahang +2.6%** vs **Sarawak +0.4%** in the same month |
-| Do pump prices move the transport CPI? | Partly: **Pearson r = 0.74** between transport-CPI YoY and RON97-price YoY (99 monthly observations). Correlating *year-over-year changes* rather than price levels avoids the spurious co-trending two rising series would otherwise show |
+| Where is inflation now? | Headline CPI **+1.8% YoY** — modest, but masking a wide spread |
+| What's driving it? | **Information & Communication (+3.4%)** runs hottest, then Personal Care (+2.9%) and Alcoholic Beverages & Tobacco (+2.7%); Clothing & Footwear is flat (+0.1%) |
+| Is inflation uniform across Malaysia? | No — **Negeri Sembilan +2.5%** vs **Sarawak +0.3%** in the same month |
+| Do pump prices move the transport CPI? | Partly: **Pearson r = 0.74** between transport-CPI YoY and RON97-price YoY (100 monthly observations). Correlating *year-over-year changes* rather than price levels avoids the spurious co-trending two rising series would otherwise show |
 | Is the fuel-subsidy regime visible in the data? | Yes — RON95 sat at **exactly RM 2.05 for 242 weeks** (all of 2023), then unpegged: it ranges **RM 2.52–4.27 across 2026**. Market-priced diesel peaked at **RM 6.72/L** (9 Apr 2026) |
-
-Auto-generated details: [`reports/summary.md`](reports/summary.md).
-
-| | |
-|---|---|
-| ![Headline inflation](reports/figures/headline_inflation.png) | ![Division breakdown](reports/figures/division_yoy_latest.png) |
-| ![Fuel prices](reports/figures/fuel_prices.png) | ![Transport vs fuel](reports/figures/transport_vs_fuel.png) |
 
 ## Power BI dashboard
 
 ![Power BI dashboard](powerbi/screenshots/dashboard.png)
 
-A four-visual Power BI report built on this warehouse: headline CPI inflation
-back to 1981, average inflation by state, weekly retail fuel prices, and the
-transport-CPI-vs-RON97 comparison. Exported view:
+Headline CPI back to 1981, inflation by state, weekly pump prices, and the
+transport-CPI-vs-RON97 comparison. Print view:
 [`powerbi/screenshots/dashboard.pdf`](powerbi/screenshots/dashboard.pdf).
 
-The report connects to the CSVs below by **raw HTTPS URL**, not to a local
-file, so it refreshes straight from this repository and anyone can rebuild it
-without a database or a gateway.
+**How it is wired.** `powerbi/export_for_powerbi.py` flattens the marts into
+four CSVs that are committed here, and the report reads them over **raw HTTPS**
+rather than from a local file:
 
-## BI-tool exports (Power BI / Tableau)
-
-`powerbi/export_for_powerbi.py` flattens the marts into four CSVs that are
-committed to this repo, so a BI tool can consume them straight over HTTPS
-without a database or a gateway:
-
-| Table | Raw URL |
+| Table | File |
 |---|---|
 | National CPI by division | [`powerbi/cpi_national.csv`](powerbi/cpi_national.csv) |
 | CPI by state | [`powerbi/cpi_state.csv`](powerbi/cpi_state.csv) |
 | Weekly fuel prices | [`powerbi/fuel_prices.csv`](powerbi/fuel_prices.csv) |
 | Transport CPI vs RON97 | [`powerbi/transport_vs_fuel.csv`](powerbi/transport_vs_fuel.csv) |
 
-In Power BI: **Get data → Text/CSV → Link to file**, then paste the raw
-`raw.githubusercontent.com` URL for any of the four with *Anonymous*
-authentication. The report then refreshes directly from this repository.
+So the dashboard refreshes straight from this repository, with no database and
+no gateway — *Get data → Text/CSV → Link to file*, paste a
+`raw.githubusercontent.com` URL, authenticate as *Anonymous*. Colours and
+spacing come from [`powerbi/theme.json`](powerbi/theme.json).
+
+`python src/report.py` additionally regenerates a plain-text findings summary
+and matplotlib figures straight from the warehouse, so the numbers quoted above
+are reproducible without opening any BI tool:
+[`reports/summary.md`](reports/summary.md).
 
 ## Data quality
 
