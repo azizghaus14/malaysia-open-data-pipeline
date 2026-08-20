@@ -55,6 +55,23 @@ Auto-generated details: [`reports/summary.md`](reports/summary.md).
 | ![Headline inflation](reports/figures/headline_inflation.png) | ![Division breakdown](reports/figures/division_yoy_latest.png) |
 | ![Fuel prices](reports/figures/fuel_prices.png) | ![Transport vs fuel](reports/figures/transport_vs_fuel.png) |
 
+## BI-tool exports (Power BI / Tableau)
+
+`powerbi/export_for_powerbi.py` flattens the marts into four CSVs that are
+committed to this repo, so a BI tool can consume them straight over HTTPS
+without a database or a gateway:
+
+| Table | Raw URL |
+|---|---|
+| National CPI by division | [`powerbi/cpi_national.csv`](powerbi/cpi_national.csv) |
+| CPI by state | [`powerbi/cpi_state.csv`](powerbi/cpi_state.csv) |
+| Weekly fuel prices | [`powerbi/fuel_prices.csv`](powerbi/fuel_prices.csv) |
+| Transport CPI vs RON97 | [`powerbi/transport_vs_fuel.csv`](powerbi/transport_vs_fuel.csv) |
+
+In Power BI: **Get data → Text/CSV → Link to file**, then paste the raw
+`raw.githubusercontent.com` URL for any of the four with *Anonymous*
+authentication. The report then refreshes directly from this repository.
+
 ## Data quality
 
 `tests/test_data_quality.py` runs **12 pytest checks** across five families —
