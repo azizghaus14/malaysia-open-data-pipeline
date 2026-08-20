@@ -55,6 +55,19 @@ Auto-generated details: [`reports/summary.md`](reports/summary.md).
 | ![Headline inflation](reports/figures/headline_inflation.png) | ![Division breakdown](reports/figures/division_yoy_latest.png) |
 | ![Fuel prices](reports/figures/fuel_prices.png) | ![Transport vs fuel](reports/figures/transport_vs_fuel.png) |
 
+## Power BI dashboard
+
+![Power BI dashboard](powerbi/screenshots/dashboard.png)
+
+A four-visual Power BI report built on this warehouse: headline CPI inflation
+back to 1981, average inflation by state, weekly retail fuel prices, and the
+transport-CPI-vs-RON97 comparison. Exported view:
+[`powerbi/screenshots/dashboard.pdf`](powerbi/screenshots/dashboard.pdf).
+
+The report connects to the CSVs below by **raw HTTPS URL**, not to a local
+file, so it refreshes straight from this repository and anyone can rebuild it
+without a database or a gateway.
+
 ## BI-tool exports (Power BI / Tableau)
 
 `powerbi/export_for_powerbi.py` flattens the marts into four CSVs that are
